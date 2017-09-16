@@ -1,31 +1,35 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity,
 } from 'react-native';
 
-export default class ThreadExample extends Component {
+import { Thread } from 'react-native-thread';
+
+class ThreadExample extends Component {
+  componentDidMount() {
+    this.worker= new Thread('worker.js');
+
+    this.worker.onmessage = (message) => {
+      console.log("Got message from worker", message);
+    }
+  }
+
   render() {
+
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
+        <TouchableOpacity onPress={() => {
+          console.log('SENDING MESSAGE TO WORKER');
+          this.worker.postMessage("Hello from main thread");
+        }}>
+          <Text style={styles.welcome}>
+            Send message
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -51,3 +55,4 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('ThreadExample', () => ThreadExample);
+
