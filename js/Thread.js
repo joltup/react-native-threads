@@ -3,17 +3,17 @@ import {
   DeviceEventEmitter,
 } from 'react-native';
 
-const { WorkerManager } = NativeModules;
+const { ThreadManager } = NativeModules;
 
-export default class Worker {
+export default class Thread {
   constructor(jsPath) {
     if (!jsPath || !jsPath.endsWith('.js')) {
       throw new Error("Invalid worker path. Only js files are supported");
     }
 
-    this.id = WorkerManager.startWorker(jsPath.replace(".js", ""))
+    this.id = ThreadManager.startThread(jsPath.replace(".js", ""))
       .then(id => {
-        DeviceEventEmitter.addListener(`Worker${id}`, (message) => {
+        DeviceEventEmitter.addListener(`Thread${id}`, (message) => {
           !!message && this.onmessage && this.onmessage(message);
         });
         return id;
@@ -22,10 +22,10 @@ export default class Worker {
   }
 
   postMessage(message) {
-    this.id.then(id => WorkerManager.postWorkerMessage(id, message));
+    this.id.then(id => ThreadManager.postThreadMessage(id, message));
   }
 
   terminate() {
-    this.id.then(WorkerManager.stopWorker);
+    this.id.then(ThreadManager.stopThread);
   }
 }

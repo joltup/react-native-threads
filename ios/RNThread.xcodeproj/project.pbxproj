@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C039B44A1F6CF2A4009CB65E /* WorkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C039B4471F6CF2A4009CB65E /* WorkerManager.m */; };
+		C039B44A1F6CF2A4009CB65E /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C039B4471F6CF2A4009CB65E /* ThreadManager.m */; };
 		C039B44B1F6CF2A4009CB65E /* WorkerSelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C039B4491F6CF2A4009CB65E /* WorkerSelfManager.m */; };
 /* End PBXBuildFile section */
 
@@ -25,9 +25,9 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNThread.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNThread.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C039B4461F6CF2A4009CB65E /* WorkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkerManager.h; sourceTree = "<group>"; };
-		C039B4471F6CF2A4009CB65E /* WorkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkerManager.m; sourceTree = "<group>"; };
-		C039B4481F6CF2A4009CB65E /* WorkerSelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkerSelfManager.h; sourceTree = "<group>"; };
+		C039B4461F6CF2A4009CB65E /* ThreadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadManager.h; sourceTree = "<group>"; };
+		C039B4471F6CF2A4009CB65E /* ThreadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadManager.m; sourceTree = "<group>"; };
+		C039B4481F6CF2A4009CB65E /* ThreadSelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadSelfManager.h; sourceTree = "<group>"; };
 		C039B4491F6CF2A4009CB65E /* WorkerSelfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkerSelfManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,9 +53,9 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				C039B4461F6CF2A4009CB65E /* WorkerManager.h */,
-				C039B4471F6CF2A4009CB65E /* WorkerManager.m */,
-				C039B4481F6CF2A4009CB65E /* WorkerSelfManager.h */,
+				C039B4461F6CF2A4009CB65E /* ThreadManager.h */,
+				C039B4471F6CF2A4009CB65E /* ThreadManager.m */,
+				C039B4481F6CF2A4009CB65E /* ThreadSelfManager.h */,
 				C039B4491F6CF2A4009CB65E /* WorkerSelfManager.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
@@ -117,7 +117,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C039B44A1F6CF2A4009CB65E /* WorkerManager.m in Sources */,
+				C039B44A1F6CF2A4009CB65E /* ThreadManager.m in Sources */,
 				C039B44B1F6CF2A4009CB65E /* WorkerSelfManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

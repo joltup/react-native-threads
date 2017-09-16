@@ -1,13 +1,13 @@
-#ifndef WorkerManager_h
-#define WorkerManager_h
+#ifndef ThreadManager_h
+#define ThreadManager_h
 
-#import "WorkerSelfManager.h"
+#import "ThreadSelfManager.h"
 #import <React/RCTBridge.h>
 #import <React/RCTBridge+Private.h>
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTBundleURLProvider.h>
 
-@interface WorkerManager : NSObject <RCTBridgeModule>
+@interface ThreadManager : NSObject <RCTBridgeModule>
 @end
 
 #endif

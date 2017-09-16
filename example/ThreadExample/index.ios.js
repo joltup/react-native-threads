@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { worker } from 'react-native-thread';
+import { Thread } from 'react-native-thread';
 
 class ThreadExample extends Component {
   componentDidMount() {
-    this.worker = new worker('worker.js');
+    this.worker= new Thread('worker.js');
 
     this.worker.onmessage = (message) => {
       console.log("Got message from worker", message);
