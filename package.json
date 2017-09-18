@@ -9,8 +9,8 @@
   "keywords": [
     "react-native"
   ],
-  "author": "",
-  "license": "",
+  "author": "Travis Nuttall",
+  "license": "MIT",
   "files": [
     "android/",
     "ios/",
