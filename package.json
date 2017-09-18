@@ -7,7 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "thread",
+    "workers",
+    "parallelism",
+    "concurrency",
+    "processing"
   ],
   "author": "Travis Nuttall",
   "license": "MIT",
