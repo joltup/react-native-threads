@@ -1,4 +1,4 @@
-import { self } from 'react-native-thread';
+import { self } from 'react-native-threads';
 
 /*
  * Web Worker

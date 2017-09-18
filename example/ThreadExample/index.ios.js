@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { Thread } from 'react-native-thread';
+import { Thread } from 'react-native-threads';
 
 class ThreadExample extends Component {
   componentDidMount() {

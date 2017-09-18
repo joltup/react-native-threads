@@ -12,11 +12,11 @@ and I recommend you investigate those thoroughly before using this library.
 
 ## Getting started
 
-`$ npm install react-native-thread --save`
+`$ npm install react-native-threads --save`
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-thread`
+`$ react-native link react-native-threads`
 
 ### Android
 
@@ -46,7 +46,7 @@ like this:
 #### iOS
 
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-thread` and add `RNThread.xcodeproj`
+2. Go to `node_modules` ➜ `react-native-threads` and add `RNThread.xcodeproj`
 3. In XCode, in the project navigator, select your project. Add `libRNThread.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)<
 
@@ -63,12 +63,12 @@ like this:
 
 2. Append the following lines to `android/settings.gradle`:
   	```
-  	include ':react-native-thread'
-  	project(':react-native-thread').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-thread/android')
+  	include ':react-native-threads'
+  	project(':react-native-threads').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-threads/android')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
-      compile project(':react-native-thread')
+      compile project(':react-native-threads')
   	```
 
 #### Windows
@@ -76,7 +76,7 @@ Windows support is not yet implemented, but PRs are welcome if you want to give 
 
 [Read it! :D](https://github.com/ReactWindows/react-native)
 
-1. In Visual Studio add the `RNThread.sln` in `node_modules/react-native-thread/windows/RNThread.sln` folder to their solution, reference from their app.
+1. In Visual Studio add the `RNThread.sln` in `node_modules/react-native-threads/windows/RNThread.sln` folder to their solution, reference from their app.
 2. Open up your `MainPage.cs` app
   - Add `using Thread.RNThread;` to the usings at the top of the file
   - Add `new RNThreadPackage()` to the `List<IReactPackage>` returned by the `Packages` method
@@ -114,7 +114,7 @@ self.onmessage = (message) => {
 self.postMessage('hello');
 ```
 
-Check out the examples directory in this repo for demos of using `react-native-thread`
+Check out the examples directory in this repo for demos of using `react-native-threads`
 in a functioning app!
 
 ### Thread Lifecycle
