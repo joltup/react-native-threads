@@ -23,11 +23,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BaseReactPackage implements ReactPackage {
+public class ThreadBaseReactPackage implements ReactPackage {
 
     private final ReactInstanceManager reactInstanceManager;
 
-    public BaseReactPackage(ReactInstanceManager reactInstanceManager) {
+    public ThreadBaseReactPackage(ReactInstanceManager reactInstanceManager) {
         this.reactInstanceManager = reactInstanceManager;
     }
 
