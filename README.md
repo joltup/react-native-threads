@@ -130,3 +130,18 @@ remotely behave unpredictably. I recommend using a third party debugging tool li
 [Reactotron](https://github.com/infinitered/reactotron) to aid with this. Each process,
 including your main application as well as your thread code can connect to Reactotron
 and log debugging messages.
+
+## Acknowledgements
+
+This library was heavily inspired by two other packages both under the name of
+`react-native-workers`.
+
+The first was https://github.com/fabriciovergal/react-native-workers ,
+and the second was https://github.com/devfd/react-native-workers
+
+I ended up going with devfd's implementation strategy as it seemed more flexible
+and feature-rich to me.  At the time of this writing neither library was functioning
+on the latest version of react native, and neither seemed to be very actively maintained.
+
+This library would not exist without those two reference implementations to guide me!
+
