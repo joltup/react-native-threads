@@ -16,7 +16,7 @@ RCT_EXPORT_METHOD(postMessage: (NSString *)message)
     return;
   }
 
-  NSString *eventName = [NSString stringWithFormat:@"thread%i", self.threadId];
+  NSString *eventName = [NSString stringWithFormat:@"Thread%i", self.threadId];
 
   [self.parentBridge.eventDispatcher sendAppEventWithName:eventName
                                                body:message];
