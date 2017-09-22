@@ -34,12 +34,15 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
   private String TAG = "ThreadManager";
   private HashMap<Integer, JSThread> threads;
 
+  private ReactApplicationContext reactApplicationContext;
+
   private ReactNativeHost reactNativeHost;
 
   private ReactPackage additionalThreadPackages[];
 
   public RNThreadModule(final ReactApplicationContext reactContext, ReactNativeHost reactNativehost, ReactPackage additionalThreadPackages[]) {
     super(reactContext);
+    this.reactApplicationContext = reactContext;
     threads = new HashMap<>();
     this.reactNativeHost = reactNativehost;
     this.additionalThreadPackages = additionalThreadPackages;
@@ -172,7 +175,7 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
 
   private JSBundleLoader createReleaseBundleLoader(String jsFileName, String jsFileSlug) {
     Log.d(TAG, "createReleaseBundleLoader - reading file from assets");
-    return JSBundleLoader.createFileLoader("assets://threads/" + jsFileSlug + ".bundle");
+    return JSBundleLoader.createAssetLoader(reactApplicationContext, "assets://threads/" + jsFileSlug + ".bundle");
   }
 
   private ReactInstanceManager getReactInstanceManager() {
