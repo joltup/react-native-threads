@@ -131,6 +131,32 @@ remotely behave unpredictably. I recommend using a third party debugging tool li
 including your main application as well as your thread code can connect to Reactotron
 and log debugging messages.
 
+### Building for Release
+
+You will need to manually bundle your thread files for use in a production release
+of your app.  This documentation assumes you have a single thread file called
+`index.thread.js` in your project root.  If your file is named differently or in
+a different location, you can update the documented commands accordingly.
+
+For iOS you can use the following command:
+
+`node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./ios --entry-file index.thread.js --platform ios --bundle-output ./ios/index.thread.js`
+
+Once you have generated the bundle file in your ios folder, you will also need to add
+the bundle file to you project in Xcode. In Xcode's file explorer you should see
+a folder with the same name as your app, containing a `main.jsbundle` file as well
+as an `appDelegate.m` file. Right click on that folder and select the 'Add Files to <Your App Name>'
+option, which will open up finder and allow you to select your `ios/index.thread.js`
+file. You will only need to do this once, and the file will be included in all future
+builds.
+
+For Android you can use the following command:
+
+`node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./android/app/src/main/res/ --entry-file index.thread.js --platform android --bundle-output ./android/app/src/main/ assets/threads/index.thread.bundle`
+
+For convenience I recommend adding these thread building commands as npm scripts
+to your project.
+
 ## Acknowledgements
 
 This library was heavily inspired by two other packages both under the name of
