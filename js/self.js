@@ -14,7 +14,7 @@ const self = {
   }
 };
 
-DeviceEventEmitter.addListener("ThreadMessage", (message) => {
+DeviceEventEmitter.addListener('ThreadMessage', (message) => {
   !!message && self.onmessage && self.onmessage(message);
 });
 
