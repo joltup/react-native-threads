@@ -96,7 +96,7 @@ const thread = new Thread('path/to/thread.js');
 thread.postMessage('hello');
 
 // listen for messages
-thread.onMessage = (message) => console.log(message);
+thread.onmessage = (message) => console.log(message);
 
 // stop the JS process
 thread.terminate();
