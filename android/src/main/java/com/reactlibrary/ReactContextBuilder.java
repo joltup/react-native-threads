@@ -7,13 +7,12 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.CatalystInstance;
 import com.facebook.react.bridge.CatalystInstanceImpl;
 import com.facebook.react.bridge.JSBundleLoader;
-import com.facebook.react.bridge.JSCJavaScriptExecutor;
+import com.facebook.react.bridge.JSCJavaScriptExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutor;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.NativeModuleCallExceptionHandler;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.queue.ReactQueueConfigurationSpec;
 import com.facebook.react.devsupport.interfaces.DevSupportManager;
 import com.facebook.soloader.SoLoader;
@@ -55,7 +54,7 @@ public class ReactContextBuilder {
     }
 
     public ReactApplicationContext build() throws Exception {
-        JavaScriptExecutor jsExecutor = new JSCJavaScriptExecutor.Factory(new WritableNativeMap()).create();
+        JavaScriptExecutor jsExecutor = new JSCJavaScriptExecutorFactory().create();
 
         // fresh new react context
         final ReactApplicationContext reactContext = new ReactApplicationContext(parentContext);
