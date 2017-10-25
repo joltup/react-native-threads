@@ -20,7 +20,7 @@ RCT_REMAP_METHOD(startThread,
 
   int threadId = abs(arc4random());
 
-  NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name fallbackResource:nil];
+  NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name fallbackResource:name];
   NSLog(@"starting Thread %@", [threadURL absoluteString]);
 
 
