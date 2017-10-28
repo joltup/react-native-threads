@@ -157,6 +157,13 @@ For Android you can use the following command:
 For convenience I recommend adding these thread building commands as npm scripts
 to your project.
 
+## Example App
+Included in this repository is a simple example application demonstrating basic
+usage of react-native-threads. Look at `examples/SimpleExample/README.md` for
+instructions on running it.  Here's how the app looks with the Reactotron debugger:
+
+![SimpleExample Screen Capture](https://raw.githubusercontent.com/traviskn/react-native-threads/master/media/simplethreadexample.gif)
+
 ## Acknowledgements
 
 This library was heavily inspired by two other packages both under the name of
