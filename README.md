@@ -140,7 +140,7 @@ a different location, you can update the documented commands accordingly.
 
 For iOS you can use the following command:
 
-`node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./ios --entry-file index.thread.js --platform ios --bundle-output ./ios/index.thread.js`
+`node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./ios --entry-file index.thread.js --platform ios --bundle-output ./ios/index.thread.jsbundle`
 
 Once you have generated the bundle file in your ios folder, you will also need to add
 the bundle file to you project in Xcode. In Xcode's file explorer you should see
