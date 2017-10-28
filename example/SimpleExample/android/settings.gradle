@@ -1,0 +1,5 @@
+rootProject.name = 'SimpleExample'
+include ':react-native-threads'
+project(':react-native-threads').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-threads/android')
+
+include ':app'
