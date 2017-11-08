@@ -150,9 +150,12 @@ option, which will open up finder and allow you to select your `ios/index.thread
 file. You will only need to do this once, and the file will be included in all future
 builds.
 
-For Android you can use the following command:
+For Android create this direactory
+`mkdir ./android/app/src/main/assets/threads`
 
-`node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./android/app/src/main/res/ --entry-file index.thread.js --platform android --bundle-output ./android/app/src/main/ assets/threads/index.thread.bundle`
+And then you can use the following command:
+
+`node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./android/app/src/main/res/ --entry-file index.thread.js --platform android --bundle-output ./android/app/src/main/assets/threads/index.thread.bundle`
 
 For convenience I recommend adding these thread building commands as npm scripts
 to your project.
