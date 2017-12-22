@@ -1,6 +1,7 @@
 package com.reactlibrary;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.facebook.react.NativeModuleRegistryBuilder;
 import com.facebook.react.ReactPackage;
@@ -19,6 +20,8 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
+
+import static com.facebook.react.modules.systeminfo.AndroidInfoHelpers.getFriendlyDeviceName;
 
 public class ReactContextBuilder {
 
@@ -54,7 +57,10 @@ public class ReactContextBuilder {
     }
 
     public ReactApplicationContext build() throws Exception {
-        JavaScriptExecutor jsExecutor = new JSCJavaScriptExecutorFactory().create();
+        String appName = Uri.encode(parentContext.getPackageName());
+        String deviceName = Uri.encode(getFriendlyDeviceName());
+        JavaScriptExecutor jsExecutor = new JSCJavaScriptExecutorFactory(appName, deviceName)
+                .create();
 
         // fresh new react context
         final ReactApplicationContext reactContext = new ReactApplicationContext(parentContext);
