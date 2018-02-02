@@ -138,7 +138,7 @@ of your app.  This documentation assumes you have a single thread file called
 `index.thread.js` in your project root.  If your file is named differently or in
 a different location, you can update the documented commands accordingly.
 
-*Note*: If your single thread file is in a different location, the folder structure needs to 
+**Note**: If your single thread file is in a different location, the folder structure needs to 
 be replicated under `./ios` and `./android/app/src/main/assets/threads`.
 
 ```
