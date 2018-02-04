@@ -138,6 +138,14 @@ of your app.  This documentation assumes you have a single thread file called
 `index.thread.js` in your project root.  If your file is named differently or in
 a different location, you can update the documented commands accordingly.
 
+**Note**: If your single thread file is in a different location, the folder structure needs to 
+be replicated under `./ios` and `./android/app/src/main/assets/threads`.
+
+```
+./App/Workers/worker.thread.js => ./ios/App/Workers/worker.thread.jsbundle
+./App/Workers/worker.thread.js => ./android/app/src/main/assets/threads/App/Workers/worker.thread.jsbundle
+```
+
 For iOS you can use the following command:
 
 `node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./ios --entry-file index.thread.js --platform ios --bundle-output ./ios/index.thread.jsbundle`
@@ -180,4 +188,3 @@ and feature-rich to me.  At the time of this writing neither library was functio
 on the latest version of react native, and neither seemed to be very actively maintained.
 
 This library would not exist without those two reference implementations to guide me!
-
