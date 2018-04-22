@@ -1,5 +1,8 @@
 # react-native-threads
 
+[![npm version](https://img.shields.io/npm/v/react-native-threads.svg?style=flat-square)](https://www.npmjs.com/package/react-native-threads)
+[![downloads](https://img.shields.io/npm/dm/react-native-threads.svg?style=flat-square)](https://www.npmjs.com/package/react-native-threads)
+
 Spawn new react native JavaScript processes for CPU intensive work outside of your
 main UI JavaScript process.
 
