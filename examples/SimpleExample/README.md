@@ -34,3 +34,20 @@ npm run build-thread-ios
 
 npm run build-thread-android
 ```
+
+For running android in release mode, you will need to generate a signing key.
+Follow these instructions to generate a key: https://facebook.github.io/react-native/docs/signed-apk-android.html#generating-a-signing-key
+
+When you edit your `~/.gradle/gradle.properties` to put in the name of your
+release keystore file, alias, and passwords, use the following format, with the
+names of your keystore, alias, and actual passwords instead:
+
+```
+SIMPLE_EXAMPLE_RELEASE_STORE_FILE=your-release-key.keystore
+SIMPLE_EXAMPLE_RELEASE_KEY_ALIAS=your-key-alias
+SIMPLE_EXAMPLE_RELEASE_STORE_PASSWORD=*****
+SIMPLE_EXAMPLE_RELEASE_KEY_PASSWORD=*****
+```
+
+This android project will be looking for the `SIMPLE_EXAMPLE_` prefixed variables
+specifically.

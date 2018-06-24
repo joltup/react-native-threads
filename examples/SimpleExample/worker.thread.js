@@ -11,3 +11,4 @@ self.onmessage = message => {
   self.postMessage(`Message #${count} from worker thread!`);
 }
 
+

@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Thread } from 'react-native-threads';
 
-export default class App extends Component<{}> {
+export default class App extends Component {
   state = { messages: [] }
 
   workerThread = null;

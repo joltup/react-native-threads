@@ -6,19 +6,19 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "build-thread-ios": "node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./ios --entry-file worker.thread.js --platform ios --bundle-output ./ios/worker.thread.jsbundle",
-    "build-thread-android": "node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./android/app/src/main/res/ --entry-file worker.thread.js --platform android --bundle-output ./android/app/src/main/ assets/threads/worker.thread.bundle"
+    "build-thread-android": "node node_modules/react-native/local-cli/cli.js bundle --dev false --assets-dest ./android/app/src/main/res/ --entry-file worker.thread.js --platform android --bundle-output ./android/app/src/main/assets/threads/worker.thread.bundle"
   },
   "dependencies": {
-    "react": "16.0.0-beta.5",
-    "react-native": "0.49.5",
+    "react": "16.3.1",
+    "react-native": "0.55.4",
     "react-native-threads": "file:../../"
   },
   "devDependencies": {
-    "babel-jest": "21.2.0",
+    "babel-jest": "23.0.1",
     "babel-preset-react-native": "4.0.0",
-    "jest": "21.2.1",
-    "react-test-renderer": "16.0.0-beta.5",
-    "reactotron-react-native": "1.12.3"
+    "jest": "23.1.0",
+    "react-test-renderer": "16.3.1",
+    "reactotron-react-native": "1.14.0"
   },
   "jest": {
     "preset": "react-native"
