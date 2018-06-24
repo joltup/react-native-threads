@@ -58,7 +58,11 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
   public void startThread(final String jsFileName, final Promise promise) {
     Log.d(TAG, "Starting web thread - " + jsFileName);
 
-    String jsFileSlug = jsFileName.contains("/") ? jsFileName.replaceAll("/", "_") : jsFileName;
+    // When we create the absolute file path later, a "./" will break it.
+    // Remove the leading "./" if it exists.
+    String jsFileSlug = jsFileName.contains("./")
+      ? jsFileName.replace("./", "")
+      : jsFileName;
 
     JSBundleLoader bundleLoader = getDevSupportManager().getDevSupportEnabled()
             ? createDevBundleLoader(jsFileName, jsFileSlug)
