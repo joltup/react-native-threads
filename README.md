@@ -55,7 +55,7 @@ like this:
 
 #### Android
 
-1. Open up `android/app/src/main/java/[...]/MainActivity.java`
+1. Open up `android/app/src/main/java/[...]/MainApplication.java`
   - Add `import com.reactlibrary.RNThreadPackage;` to the imports at the top of the file
   - Add `new RNThreadPackage(mReactNativeHost)` to the list returned by the `getPackages()` method
   - Also note that only the official react native modules are available from your
@@ -157,7 +157,7 @@ Once you have generated the bundle file in your ios folder, you will also need t
 the bundle file to you project in Xcode. In Xcode's file explorer you should see
 a folder with the same name as your app, containing a `main.jsbundle` file as well
 as an `appDelegate.m` file. Right click on that folder and select the 'Add Files to <Your App Name>'
-option, which will open up finder and allow you to select your `ios/index.thread.js`
+option, which will open up finder and allow you to select your `ios/index.thread.jsbundle`
 file. You will only need to do this once, and the file will be included in all future
 builds.
 
