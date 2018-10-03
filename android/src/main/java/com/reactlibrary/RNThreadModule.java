@@ -169,7 +169,11 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
 
   private JSBundleLoader createDevBundleLoader(String jsFileName, String jsFileSlug) {
     String bundleUrl = bundleUrlForFile(jsFileName);
-    String bundleOut = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/" + jsFileSlug;
+    // nested file directory will not exist in the files dir during development,
+    // so remove any leading directory paths to simply download a flat file into
+    // the root of the files directory.
+    String[] splitFileSlug = jsFileSlug.split("/");
+    String bundleOut = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/" + splitFileSlug[splitFileSlug.length - 1];
 
     Log.d(TAG, "createDevBundleLoader - download web thread to - " + bundleOut);
     downloadScriptToFileSync(bundleUrl, bundleOut);
