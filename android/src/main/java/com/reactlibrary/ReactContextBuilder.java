@@ -8,7 +8,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.CatalystInstance;
 import com.facebook.react.bridge.CatalystInstanceImpl;
 import com.facebook.react.bridge.JSBundleLoader;
-import com.facebook.react.bridge.JSCJavaScriptExecutorFactory;
+import com.facebook.react.jscexecutor.JSCExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutor;
 import com.facebook.react.bridge.NativeModuleCallExceptionHandler;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -58,7 +58,7 @@ public class ReactContextBuilder {
     public ReactApplicationContext build() throws Exception {
         String appName = Uri.encode(parentContext.getPackageName());
         String deviceName = Uri.encode(getFriendlyDeviceName());
-        JavaScriptExecutor jsExecutor = new JSCJavaScriptExecutorFactory(appName, deviceName)
+        JavaScriptExecutor jsExecutor = new JSCExecutorFactory(appName, deviceName)
                 .create();
 
         // fresh new react context
