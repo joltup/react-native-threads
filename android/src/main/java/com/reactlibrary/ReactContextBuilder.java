@@ -3,11 +3,13 @@ package com.reactlibrary;
 import android.content.Context;
 import android.net.Uri;
 
+import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.NativeModuleRegistryBuilder;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.CatalystInstance;
 import com.facebook.react.bridge.CatalystInstanceImpl;
 import com.facebook.react.bridge.JSBundleLoader;
+import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.jscexecutor.JSCExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutor;
 import com.facebook.react.bridge.NativeModuleCallExceptionHandler;
@@ -55,11 +57,21 @@ public class ReactContextBuilder {
         return this;
     }
 
+    private JavaScriptExecutorFactory getJSExecutorFactory() {
+        try {
+            String appName = Uri.encode(parentContext.getPackageName());
+            String deviceName = Uri.encode(getFriendlyDeviceName());
+            // If JSC is included, use it as normal
+            SoLoader.loadLibrary("jscexecutor");
+            return new JSCExecutorFactory(appName, deviceName);
+        } catch (UnsatisfiedLinkError jscE) {
+            // Otherwise use Hermes
+            return new HermesExecutorFactory();
+        }
+    }
+
     public ReactApplicationContext build() throws Exception {
-        String appName = Uri.encode(parentContext.getPackageName());
-        String deviceName = Uri.encode(getFriendlyDeviceName());
-        JavaScriptExecutor jsExecutor = new JSCExecutorFactory(appName, deviceName)
-                .create();
+        JavaScriptExecutor jsExecutor = getJSExecutorFactory().create();
 
         // fresh new react context
         final ReactApplicationContext reactContext = new ReactApplicationContext(parentContext);
