@@ -11,7 +11,8 @@ Pod::Spec.new do |s|
   s.author         = package['author']
   s.homepage       = "https://github.com/joltup/RNThread.git"
   s.source       = { :git => "https://github.com/joltup/RNThread.git", :tag => s.version }
-  s.source_files  = "RNThread/**/*.{h,m}"
+  s.source_files  = "**/*.{h,m}"
+  s.platform      = :ios, "7.0"
 
   s.dependency 'React'
 end
