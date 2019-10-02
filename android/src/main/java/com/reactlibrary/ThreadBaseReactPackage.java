@@ -10,7 +10,6 @@ import com.facebook.react.modules.core.ExceptionsManagerModule;
 import com.facebook.react.modules.core.Timing;
 import com.facebook.react.modules.debug.SourceCodeModule;
 import com.facebook.react.modules.intent.IntentModule;
-import com.facebook.react.modules.netinfo.NetInfoModule;
 import com.facebook.react.modules.network.NetworkingModule;
 import com.facebook.react.modules.storage.AsyncStorageModule;
 import com.facebook.react.modules.systeminfo.AndroidInfoModule;
@@ -46,7 +45,6 @@ public class ThreadBaseReactPackage implements ReactPackage {
                 new AsyncStorageModule(catalystApplicationContext),
                 new IntentModule(catalystApplicationContext),
                 new NetworkingModule(catalystApplicationContext),
-                new NetInfoModule(catalystApplicationContext),
                 new VibrationModule(catalystApplicationContext),
                 new WebSocketModule(catalystApplicationContext),
                 new ThreadSelfModule(catalystApplicationContext)
