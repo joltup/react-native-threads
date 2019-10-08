@@ -55,8 +55,8 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
   }
 
   @ReactMethod
-  public void startThread(final String jsFileName, final Promise promise) {
-    Log.d(TAG, "Starting web thread - " + jsFileName);
+  public void startThread(final String jsFileName, int threadId) {
+    Log.d(TAG, "Starting web thread - " + jsFileName + " with id: " + threadId);
 
     // When we create the absolute file path later, a "./" will break it.
     // Remove the leading "./" if it exists.
@@ -78,13 +78,12 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
               .setReactInstanceManager(getReactInstanceManager())
               .setReactPackages(threadPackages);
 
-      JSThread thread = new JSThread(jsFileSlug);
+      JSThread thread = new JSThread(jsFileSlug, threadId);
       thread.runFromContext(
               getReactApplicationContext(),
               threadContextBuilder
       );
       threads.put(thread.getThreadId(), thread);
-      promise.resolve(thread.getThreadId());
     } catch (Exception e) {
       promise.reject(e);
       getDevSupportManager().handleException(e);

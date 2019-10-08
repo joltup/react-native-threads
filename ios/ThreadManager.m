@@ -11,14 +11,11 @@ RCT_EXPORT_MODULE();
 
 RCT_REMAP_METHOD(startThread,
                  name: (NSString *)name
-                 resolver:(RCTPromiseResolveBlock)resolve
-                 rejecter:(RCTPromiseRejectBlock)reject)
+                 threadId: (int)threadId)
 {
   if (threads == nil) {
     threads = [[NSMutableDictionary alloc] init];
   }
-
-  int threadId = abs(arc4random());
 
   NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name fallbackResource:name];
   NSLog(@"starting Thread %@", [threadURL absoluteString]);
@@ -32,9 +29,7 @@ RCT_REMAP_METHOD(startThread,
   [threadSelf setThreadId:threadId];
   [threadSelf setParentBridge:self.bridge];
 
-
   [threads setObject:threadBridge forKey:[NSNumber numberWithInt:threadId]];
-  resolve([NSNumber numberWithInt:threadId]);
 }
 
 RCT_EXPORT_METHOD(stopThread:(int)threadId)

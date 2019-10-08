@@ -11,8 +11,8 @@ public class JSThread {
     private String jsSlugname;
     private ReactApplicationContext reactContext;
 
-    public JSThread(String jsSlugname) {
-        this.id = Math.abs(new Random().nextInt());
+    public JSThread(String jsSlugname, int id) {
+        this.id = id;
         this.jsSlugname = jsSlugname;
     }
 
