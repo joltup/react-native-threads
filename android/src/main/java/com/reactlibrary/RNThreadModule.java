@@ -85,7 +85,6 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
       );
       threads.put(thread.getThreadId(), thread);
     } catch (Exception e) {
-      promise.reject(e);
       getDevSupportManager().handleException(e);
     }
   }
