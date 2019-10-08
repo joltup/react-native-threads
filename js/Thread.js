@@ -12,7 +12,7 @@ export default class Thread {
     }
 
     this.id = 9999;
-    ThreadManager.startThread(jsPath.replace(".js", ""))
+    ThreadManager.startThread(jsPath.replace(".js", ""), this.id)
     DeviceEventEmitter.addListener(`Thread${this.id}`, (message) => {
       !!message && this.onmessage && this.onmessage(message);
     });
