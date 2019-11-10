@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7FE51B6A2377B6CE0043E834 /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C039B4471F6CF2A4009CB65E /* ThreadManager.m */; };
+		7FE51B6B2377B6CE0043E834 /* WorkerSelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C039B4491F6CF2A4009CB65E /* WorkerSelfManager.m */; };
 		C039B44A1F6CF2A4009CB65E /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C039B4471F6CF2A4009CB65E /* ThreadManager.m */; };
 		C039B44B1F6CF2A4009CB65E /* WorkerSelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C039B4491F6CF2A4009CB65E /* WorkerSelfManager.m */; };
 /* End PBXBuildFile section */
@@ -21,10 +23,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7FE51B6D2377B6CE0043E834 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNThread.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNThread.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FE51B712377B6CE0043E834 /* libRNThread-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libRNThread-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C039B4461F6CF2A4009CB65E /* ThreadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadManager.h; sourceTree = "<group>"; };
 		C039B4471F6CF2A4009CB65E /* ThreadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadManager.m; sourceTree = "<group>"; };
 		C039B4481F6CF2A4009CB65E /* ThreadSelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadSelfManager.h; sourceTree = "<group>"; };
@@ -39,6 +51,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7FE51B6C2377B6CE0043E834 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -46,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				134814201AA4EA6300B7C361 /* libRNThread.a */,
+				7FE51B712377B6CE0043E834 /* libRNThread-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -81,6 +101,23 @@
 			productReference = 134814201AA4EA6300B7C361 /* libRNThread.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		7FE51B682377B6CE0043E834 /* RNThread-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7FE51B6E2377B6CE0043E834 /* Build configuration list for PBXNativeTarget "RNThread-tvOS" */;
+			buildPhases = (
+				7FE51B692377B6CE0043E834 /* Sources */,
+				7FE51B6C2377B6CE0043E834 /* Frameworks */,
+				7FE51B6D2377B6CE0043E834 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RNThread-tvOS";
+			productName = RCTDataManager;
+			productReference = 7FE51B712377B6CE0043E834 /* libRNThread-tvOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -100,6 +137,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -108,6 +146,7 @@
 			projectRoot = "";
 			targets = (
 				58B511DA1A9E6C8500147676 /* RNThread */,
+				7FE51B682377B6CE0043E834 /* RNThread-tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -119,6 +158,15 @@
 			files = (
 				C039B44A1F6CF2A4009CB65E /* ThreadManager.m in Sources */,
 				C039B44B1F6CF2A4009CB65E /* WorkerSelfManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7FE51B692377B6CE0043E834 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7FE51B6A2377B6CE0043E834 /* ThreadManager.m in Sources */,
+				7FE51B6B2377B6CE0043E834 /* WorkerSelfManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +266,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNThread;
+				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -234,6 +283,41 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNThread;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		7FE51B6F2377B6CE0043E834 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../react-native/React/**",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		7FE51B702377B6CE0043E834 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../react-native/React/**",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -255,6 +339,15 @@
 			buildConfigurations = (
 				58B511F01A9E6C8500147676 /* Debug */,
 				58B511F11A9E6C8500147676 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7FE51B6E2377B6CE0043E834 /* Build configuration list for PBXNativeTarget "RNThread-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7FE51B6F2377B6CE0043E834 /* Debug */,
+				7FE51B702377B6CE0043E834 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
