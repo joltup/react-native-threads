@@ -6,6 +6,7 @@ import {
   View
 } from 'react-native';
 import { Thread } from 'react-native-threads';
+import './config';
 
 export default class App extends Component {
   state = { messages: [] }
