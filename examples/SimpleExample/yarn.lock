@@ -4800,10 +4800,8 @@ react-is@^16.8.1, react-is@^16.8.4, react-is@^16.9.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.11.0.tgz#b85dfecd48ad1ce469ff558a882ca8e8313928fa"
   integrity sha512-gbBVYR2p8mnriqAwWx9LbuUrShnAuSCNnuPGyc7GJrMVQtPDAh8iLpv7FRuMPFb56KkaVZIYSz1PrjI9q0QPCw==
 
-react-native-threads@0.0.17:
+"react-native-threads@file:../..":
   version "0.0.17"
-  resolved "https://registry.yarnpkg.com/react-native-threads/-/react-native-threads-0.0.17.tgz#a880c14244fa1b9183ed99761bb7dfd170f79069"
-  integrity sha512-Qoi5djj3XtQGNkBzcLMBMtqoARm+805VQroP2YoH8ohdQPkcxuPbduJCw+rTuk6grpbXGNpOu9zS41r1oA0uVw==
 
 "react-native@npm:react-native-tvos@0.61.2-0":
   version "0.61.2-0"

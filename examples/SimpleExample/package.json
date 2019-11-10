@@ -13,7 +13,7 @@
   "dependencies": {
     "react": "16.9.0",
     "react-native": "npm:react-native-tvos@0.61.2-0",
-    "react-native-threads": "0.0.17"
+    "react-native-threads": "file:../.."
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
