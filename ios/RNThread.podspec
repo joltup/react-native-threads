@@ -13,6 +13,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/joltup/RNThread.git", :tag => s.version }
   s.source_files  = "**/*.{h,m}"
   s.platform      = :ios, "7.0"
+  s.tvos.deployment_target = '10.0'
 
   s.dependency 'React'
 end
