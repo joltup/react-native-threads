@@ -75,7 +75,7 @@ public class ReactContextBuilder {
                 // stop if we were successful
                 hermes.close();
                 return new HermesExecutorFactory();
-            } catch (UnsatisfiedLinkError e) {
+            } catch (UnsatisfiedLinkError|NoClassDefFoundError e) {
                 // try v8
                 return new V8ExecutorFactory();
             }
