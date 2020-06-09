@@ -18,6 +18,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.queue.ReactQueueConfigurationSpec;
 import com.facebook.react.devsupport.interfaces.DevSupportManager;
 import com.facebook.soloader.SoLoader;
+import com.facebook.v8.reactexecutor.V8ExecutorFactory;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
@@ -65,8 +66,19 @@ public class ReactContextBuilder {
             SoLoader.loadLibrary("jscexecutor");
             return new JSCExecutorFactory(appName, deviceName);
         } catch (UnsatisfiedLinkError jscE) {
-            // Otherwise use Hermes
-            return new HermesExecutorFactory();
+            // Otherwise try using hermes
+            try {
+                // we try whether we can start the hermes js executor.
+                // If it fails with an UnsatisfiedLinkError we know
+                // that it is not available.
+                JavaScriptExecutor hermes = new HermesExecutorFactory().create();
+                // stop if we were successful
+                hermes.close();
+                return new HermesExecutorFactory();
+            } catch (UnsatisfiedLinkError|NoClassDefFoundError e) {
+                // try v8
+                return new V8ExecutorFactory();
+            }
         }
     }
 

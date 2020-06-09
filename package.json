@@ -24,7 +24,8 @@
     "android/",
     "ios/",
     "js/",
-    "index.js"
+    "index.js",
+    "react-native.config.js"
   ],
   "peerDependencies": {
     "react-native": ">=0.50.0"
