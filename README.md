@@ -171,6 +171,44 @@ And then you can use the following command:
 For convenience I recommend adding these thread building commands as npm scripts
 to your project.
 
+## Android: Compile bundle to bytecode of Hermes engine
+
+```bash
+OS="`uname`"
+case $OS in
+  'Darwin')
+    OS_BIN='osx-bin'
+    ;;
+  'Linux')
+    OS_BIN='linux64-bin'
+    ;;
+  'WindowsNT')
+    OS_BIN='win64-bin'
+    ;;
+  *) ;;
+
+DIR=./android/app/src/main/assets/threads
+BUNDLE=$DIR/index.thread.bundle
+BUNDLE_PACKAGER_MAP=$DIR/index.thread.bundle.packager.map
+BUNDLE_MAP=$DIR/index.thread.bundle.map
+
+react-native bundle \
+  --dev false --assets-dest ./android/app/src/main/res/ \
+  --entry-file index.thread.js --platform android \
+  --bundle-output $BUNDLE \
+  --sourcemap-output $BUNDLE_PACKAGER_MAP
+
+node_modules/hermes-engine/$OS_BIN/hermesc \
+  -emit-binary \
+  -out $BUNDLE_PATH $BUNDLE_PATH \
+  -O -output-source-map
+
+node_modules/react-native/scripts/compose-source-maps.js $BUNDLE_PACKAGER_MAP $BUNDLE_MAP -o $BUNDLE_MAP
+rm $BUNDLE_PACKAGER_MAP
+```
+
+This is taken from [`react-native/react.gradle`](https://github.com/facebook/react-native/blob/e8c1eeeb0630d73f106417684762f822ea980d91/react.gradle#L175-L218).
+
 ## Example App
 Included in this repository is a simple example application demonstrating basic
 usage of react-native-threads. Look at `examples/SimpleExample/README.md` for
