@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
   s.platform      = :ios, "7.0"
   s.tvos.deployment_target = '10.0'
 
-  s.dependency 'React'
+  s.dependency 'React-Core'
 end
