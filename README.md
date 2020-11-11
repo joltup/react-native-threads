@@ -8,7 +8,7 @@ main UI JavaScript process.
 
 Despite this package's name, this isn't real 'threading', but rather multi-processing.
 The main tradeoff of using this library is memory usage, as creating new JS processes
-can have significant overhead. Be sure to benchmark your app's memory usage and other
+can have significant overhead.  Be sure to benchmark your app's memory usage and other
 resources before using this library! Alternative solutions include using `runAfterInteractions`
 or the [Interaction Manager](https://facebook.github.io/react-native/docs/interactionmanager.html),
 and I recommend you investigate those thoroughly before using this library.
@@ -24,7 +24,7 @@ and I recommend you investigate those thoroughly before using this library.
 ### Android
 
 For android you will need to make a slight modification to your `MainApplication.java`
-file. In the `getPackages` method pass in `mReactNativeHost` to the `RNThreadPackage`
+file.  In the `getPackages` method pass in `mReactNativeHost` to the `RNThreadPackage`
 constructor:
 
 ```java
@@ -45,6 +45,7 @@ like this:
 
 ### Manual installation
 
+
 #### iOS
 
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
@@ -55,49 +56,47 @@ like this:
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainApplication.java`
-
-- Add `import com.reactlibrary.RNThreadPackage;` to the imports at the top of the file
-- Add `new RNThreadPackage(mReactNativeHost)` to the list returned by the `getPackages()` method
-- Also note that only the official react native modules are available from your
-  threads (vibration, fetch, etc...). To include additional native modules in your
-  threads, pass them into the `RNThreadPackage` constructor after the `mReactNativeHost`
-  like this:
-  `new RNThreadPackage(mReactNativeHost, new ExampleNativePackage(), new SQLitePackage())`
+  - Add `import com.reactlibrary.RNThreadPackage;` to the imports at the top of the file
+  - Add `new RNThreadPackage(mReactNativeHost)` to the list returned by the `getPackages()` method
+  - Also note that only the official react native modules are available from your
+    threads (vibration, fetch, etc...). To include additional native modules in your
+    threads, pass them into the `RNThreadPackage` constructor after the `mReactNativeHost`
+    like this:
+    `new RNThreadPackage(mReactNativeHost, new ExampleNativePackage(), new SQLitePackage())`
 
 2. Append the following lines to `android/settings.gradle`:
-   ```
-   include ':react-native-threads'
-   project(':react-native-threads').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-threads/android')
-   ```
+  	```
+  	include ':react-native-threads'
+  	project(':react-native-threads').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-threads/android')
+  	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-   ```
-     compile project(':react-native-threads')
-   ```
+  	```
+      compile project(':react-native-threads')
+  	```
 
 #### Windows
-
 Windows support is not yet implemented, but PRs are welcome if you want to give it a shot!
 
 [Read it! :D](https://github.com/ReactWindows/react-native)
 
 1. In Visual Studio add the `RNThread.sln` in `node_modules/react-native-threads/windows/RNThread.sln` folder to their solution, reference from their app.
 2. Open up your `MainPage.cs` app
+  - Add `using Thread.RNThread;` to the usings at the top of the file
+  - Add `new RNThreadPackage()` to the `List<IReactPackage>` returned by the `Packages` method
 
-- Add `using Thread.RNThread;` to the usings at the top of the file
-- Add `new RNThreadPackage()` to the `List<IReactPackage>` returned by the `Packages` method
 
 ## Usage
 
 In your application code (react components, etc.):
 
 ```javascript
-import { Thread } from "react-native-threads";
+import { Thread } from 'react-native-threads';
 
 // start a new react native JS process
-const thread = new Thread("path/to/thread.js");
+const thread = new Thread('path/to/thread.js');
 
 // send a message, strings only
-thread.postMessage("hello");
+thread.postMessage('hello');
 
 // listen for messages
 thread.onmessage = (message) => console.log(message);
@@ -107,15 +106,15 @@ thread.terminate();
 ```
 
 In your thread code (dedicated file such as `thread.js`):
-
 ```javascript
-import { self } from "react-native-threads";
+import { self } from 'react-native-threads';
 
 // listen for messages
-self.onmessage = (message) => {};
+self.onmessage = (message) => {
+}
 
 // send a message, strings only
-self.postMessage("hello");
+self.postMessage('hello');
 ```
 
 Check out the examples directory in this repo for demos of using `react-native-threads`
@@ -126,7 +125,7 @@ in a functioning app!
 By default, we only import the minimim amount from React Native to get things running. This significantly reduces the bundle size of the thread, which is good for performance. However, this also means globals and polyfills are not set up by default - things like `fetch` and `async`/`await` won't work out of the box. If you need these, add an import to `react-native` at the top of your `thread.js`.
 
 ```javascript
-import "react-native";
+import 'react-native'
 ```
 
 There is a cost to importing the whole of React Native - it's a over half a megabyte of JavaScript. You may wish to find out exactly what you need from React Native, then only import that. You can look into [https://github.com/facebook/react-native/blob/master/Libraries/Core/InitializeCore.js](this setup file from React Native) to find out what files get run by default. Once you've figured out what setup and polyfills you need, you'll usually end up with imports like `import 'react-native/Libraries/Core/polyfillPromise'`.
@@ -148,11 +147,11 @@ and log debugging messages.
 ### Building for Release
 
 You will need to manually bundle your thread files for use in a production release
-of your app. This documentation assumes you have a single thread file called
-`index.thread.js` in your project root. If your file is named differently or in
+of your app.  This documentation assumes you have a single thread file called
+`index.thread.js` in your project root.  If your file is named differently or in
 a different location, you can update the documented commands accordingly.
 
-**Note**: If your single thread file is in a different location, the folder structure needs to
+**Note**: If your single thread file is in a different location, the folder structure needs to 
 be replicated under `./ios` and `./android/app/src/main/assets/threads`.
 
 ```
@@ -183,10 +182,9 @@ For convenience I recommend adding these thread building commands as npm scripts
 to your project.
 
 ## Example App
-
 Included in this repository is a simple example application demonstrating basic
 usage of react-native-threads. Look at `examples/SimpleExample/README.md` for
-instructions on running it. Here's how the app looks with the Reactotron debugger:
+instructions on running it.  Here's how the app looks with the Reactotron debugger:
 
 ![SimpleExample Screen Capture](https://raw.githubusercontent.com/traviskn/react-native-threads/master/media/simplethreadexample.gif)
 
@@ -199,7 +197,7 @@ The first was https://github.com/fabriciovergal/react-native-workers ,
 and the second was https://github.com/devfd/react-native-workers
 
 I ended up going with devfd's implementation strategy as it seemed more flexible
-and feature-rich to me. At the time of this writing neither library was functioning
+and feature-rich to me.  At the time of this writing neither library was functioning
 on the latest version of react native, and neither seemed to be very actively maintained.
 
 This library would not exist without those two reference implementations to guide me!
