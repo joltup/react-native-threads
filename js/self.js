@@ -1,7 +1,7 @@
 import {
   NativeModules,
   DeviceEventEmitter,
-} from 'react-native';
+} from './react-native-stripped';
 
 const { ThreadSelfManager } = NativeModules;
 

@@ -120,6 +120,16 @@ self.postMessage('hello');
 Check out the examples directory in this repo for demos of using `react-native-threads`
 in a functioning app!
 
+### Globals and Polyfills
+
+By default, we only import the minimim amount from React Native to get things running. This significantly reduces the bundle size of the thread, which is good for performance. However, this also means globals and polyfills are not set up by default - things like `fetch` and `async`/`await` won't work out of the box. If you need these, add an import to `react-native` at the top of your `thread.js`.
+
+```javascript
+import 'react-native'
+```
+
+There is a cost to importing the whole of React Native - it's a over half a megabyte of JavaScript. The bulk of this is from a single polyfill required for async/await and generators. If you don't use these you can get a significantly reduce the size of your thread bundle by only importing the polyfills you need. You can look into [https://github.com/facebook/react-native/blob/master/Libraries/Core/InitializeCore.js](this setup file from React Native) to find out what files you need to import. The one causing almost all of the bulk in the JS is `setUpRegeneratorRuntime`. Once you've figured out what polyfills you need, you'll usually end up with imports like `import 'react-native/Libraries/Core/setUpGlobals'` or `import 'react-native/Libraries/Core/polyfillPromise'`.
+
 ### Thread Lifecycle
 
 - Threads are paused when the app enters in the background
