@@ -3,6 +3,7 @@
   "version": "0.0.17",
   "description": "",
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git@github.com:joltup/react-native-threads.git"
