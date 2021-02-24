@@ -1,31 +1,56 @@
-import {
-  NativeModules,
-  DeviceEventEmitter,
-} from './react-native-stripped';
+import { NativeModules, DeviceEventEmitter } from "./react-native-stripped";
 
 const { ThreadManager } = NativeModules;
 
+const eventName = (id) => `Thread${id}`;
+
 export default class Thread {
   constructor(jsPath) {
-    if (!jsPath || !jsPath.endsWith('.js')) {
-      throw new Error('Invalid path for thread. Only js files are supported');
+    if (typeof jsPath !== "string" || !jsPath.endsWith(".js")) {
+      throw new Error("Invalid path for thread. Only js files are supported");
     }
 
-    this.id = ThreadManager.startThread(jsPath.replace(".js", ""))
-      .then(id => {
-        DeviceEventEmitter.addListener(`Thread${id}`, (message) => {
-          !!message && this.onmessage && this.onmessage(message);
-        });
+    this._terminated = false;
+
+    this._messageHandler = (message) => {
+      if (
+        !this._terminated &&
+        message != null &&
+        typeof this.onmessage === "function"
+      ) {
+        this.onmessage(message);
+      }
+    };
+
+    this.id = ThreadManager.startThread(jsPath.slice(0, -".js".length))
+      .then((id) => {
+        DeviceEventEmitter.addListener(eventName(id), this._messageHandler);
+
         return id;
       })
-      .catch(err => { throw new Error(err) });
+      .catch(() => {
+        console.warn(`Failed to start thread (${jsPath})`);
+      });
   }
 
   postMessage(message) {
-    this.id.then(id => ThreadManager.postThreadMessage(id, message));
+    this.id.then((id) => {
+      if (!this._terminated) {
+        ThreadManager.postThreadMessage(id, message);
+      }
+    });
   }
 
   terminate() {
-    this.id.then(ThreadManager.stopThread);
+    if (!this._terminated) {
+      // Ensure termination is synchronous
+      this._terminated = true;
+
+      this.id.then((id) => {
+        DeviceEventEmitter.removeListener(eventName(id), this._messageHandler);
+
+        ThreadManager.stopThread(id);
+      });
+    }
   }
 }

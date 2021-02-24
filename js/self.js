@@ -1,7 +1,4 @@
-import {
-  NativeModules,
-  DeviceEventEmitter,
-} from './react-native-stripped';
+import { NativeModules, DeviceEventEmitter } from "./react-native-stripped";
 
 const { ThreadSelfManager } = NativeModules;
 
@@ -9,13 +6,16 @@ const self = {
   onmessage: null,
 
   postMessage: (message) => {
-    if (!message) { return; }
-    ThreadSelfManager.postMessage(message);
-  }
+    if (message != null) {
+      ThreadSelfManager.postMessage(message);
+    }
+  },
 };
 
-DeviceEventEmitter.addListener('ThreadMessage', (message) => {
-  !!message && self.onmessage && self.onmessage(message);
+DeviceEventEmitter.addListener("ThreadMessage", (message) => {
+  if (message != null && typeof self.onmessage === "function") {
+    self.onmessage(message);
+  }
 });
 
 export default self;
