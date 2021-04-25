@@ -9,7 +9,7 @@ const self = {
   onmessage: null,
 
   postMessage: (message) => {
-    if (!message) { return; }
+    if (!message || !ThreadSelfManager) { return; }
     ThreadSelfManager.postMessage(message);
   }
 };
