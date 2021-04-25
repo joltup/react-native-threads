@@ -20,8 +20,15 @@ RCT_REMAP_METHOD(startThread,
 
   int threadId = abs(arc4random());
 
-  NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name fallbackResource:name];
-  NSLog(@"starting Thread %@", [threadURL absoluteString]);
+  //NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name fallbackResource:name];
+  //NSLog(@"starting Thread %@", [threadURL absoluteString]);
+  //
+  // workaround for resolve thread js bundle without any crash
+  //
+  NSArray *array = [name componentsSeparatedByString:@"/"];
+  NSString *fileName = [array lastObject];
+  NSLog(@"log:::::%@", fileName);
+  NSURL *threadURL = [[NSBundle mainBundle] URLForResource:fileName withExtension:@"jsbundle"];  
 
 
    RCTBridge *threadBridge = [[RCTBridge alloc] initWithBundleURL:threadURL
