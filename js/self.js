@@ -15,7 +15,10 @@ import NativeEventEmitter from "react-native/Libraries/EventEmitter/NativeEventE
 BatchedBridge.registerLazyCallableModule("RCTLog", () => {
   return require("react-native/Libraries/Utilities/RCTLog");
 });
-BatchedBridge.registerCallableModule("NativeEventEmitter", NativeEventEmitter);
+BatchedBridge.registerLazyCallableModule("RCTDeviceEventEmitter", () => {
+  return require("react-native/Libraries/EventEmitter/RCTDeviceEventEmitter")
+    .default;
+});
 BatchedBridge.registerLazyCallableModule("RCTNativeAppEventEmitter", () => {
   return require("react-native/Libraries/EventEmitter/RCTNativeAppEventEmitter");
 });
