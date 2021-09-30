@@ -28,8 +28,8 @@ NSMutableDictionary *threads;
 RCT_EXPORT_METHOD(startThread:(nonnull NSNumber *)threadId
                   name:(NSString *)name)
 {
-  NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name
-                                                                    fallbackResource:name];
+  NSURL *threadURL = [RCTBundleURLProvider.sharedSettings jsBundleURLForBundleRoot:name
+                                                                  fallbackResource:name];
   NSLog(@"starting Thread %@", [threadURL absoluteString]);
 
   RCTBridge *threadBridge = [[RCTBridge alloc] initWithBundleURL:threadURL
@@ -37,10 +37,10 @@ RCT_EXPORT_METHOD(startThread:(nonnull NSNumber *)threadId
                                                    launchOptions:nil];
 
   ThreadSelfManager *threadSelf = [threadBridge moduleForClass:ThreadSelfManager.class];
-  [threadSelf setThreadId:threadId];
-  [threadSelf setDelegate:self];
+  threadSelf.threadId = threadId;
+  threadSelf.delegate = self;
 
-  [threads setObject:threadBridge forKey:threadId];
+  threads[threadId] = threadBridge;
 }
 
 RCT_EXPORT_METHOD(stopThread:(nonnull NSNumber *)threadId)
@@ -82,7 +82,7 @@ RCT_EXPORT_METHOD(postThreadMessage:(nonnull NSNumber *)threadId
 }
 
 - (void)didReceiveMessage:(ThreadSelfManager *)sender
-                 message:(NSString *)message
+                  message:(NSString *)message
 {
   id body = @{
     @"id": sender.threadId,
