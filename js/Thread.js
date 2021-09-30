@@ -1,8 +1,9 @@
-import { NativeModules, DeviceEventEmitter } from "./react-native-stripped";
+import { NativeModules, NativeEventEmitter } from "react-native";
 
 const { ThreadManager } = NativeModules;
+const ThreadEvents = new NativeEventEmitter(ThreadManager);
 
-const eventName = (id) => `Thread${id}`;
+let currentId = 0;
 
 export default class Thread {
   constructor(jsPath) {
@@ -10,47 +11,45 @@ export default class Thread {
       throw new Error("Invalid path for thread. Only js files are supported");
     }
 
-    this._terminated = false;
+    this.id = currentId++;
+    this.terminated = false;
 
-    this._messageHandler = (message) => {
+    this.listener = ThreadEvents.addListener("message", ({ id, message }) => {
       if (
-        !this._terminated &&
+        !this.terminated &&
+        id === this.id &&
         message != null &&
         typeof this.onmessage === "function"
       ) {
         this.onmessage(message);
       }
-    };
+    });
 
-    this.id = ThreadManager.startThread(jsPath.slice(0, -".js".length))
-      .then((id) => {
-        DeviceEventEmitter.addListener(eventName(id), this._messageHandler);
-
-        return id;
-      })
-      .catch(() => {
-        console.warn(`Failed to start thread (${jsPath})`);
-      });
+    const name = jsPath.slice(0, -".js".length);
+    ThreadManager.startThread(this.id, name);
   }
 
   postMessage(message) {
-    this.id.then((id) => {
-      if (!this._terminated) {
-        ThreadManager.postThreadMessage(id, message);
+    if (this.terminated) {
+      if (__DEV__) {
+        console.warn("Attempted to call postMessage on terminated worker");
       }
-    });
+      return;
+    }
+
+    ThreadManager.postThreadMessage(this.id, message);
   }
 
   terminate() {
-    if (!this._terminated) {
-      // Ensure termination is synchronous
-      this._terminated = true;
-
-      this.id.then((id) => {
-        DeviceEventEmitter.removeListener(eventName(id), this._messageHandler);
-
-        ThreadManager.stopThread(id);
-      });
+    if (this.terminated) {
+      if (__DEV__) {
+        console.warn("Attempted to call terminate on terminated worker");
+      }
+      return;
     }
+
+    this.terminated = true;
+    this.listener.remove();
+    ThreadManager.stopThread(this.id);
   }
 }

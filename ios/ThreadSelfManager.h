@@ -1,13 +1,12 @@
-#ifndef ThreadSelfManager_h
-#define ThreadSelfManager_h
+#import <React/RCTEventEmitter.h>
 
-#import <React/RCTBridge.h>
-#import <React/RCTBridge+Private.h>
-#import <React/RCTEventDispatcher.h>
-
-@interface ThreadSelfManager : NSObject <RCTBridgeModule>
-@property int threadId;
-@property RCTBridge *parentBridge;
+@protocol ThreadSelfManagerDelegate <NSObject>
+- (void)didReceiveMessage:(id)sender
+                  message:(NSString *)message;
 @end
 
-#endif
+@interface ThreadSelfManager : RCTEventEmitter
+@property (nonatomic, strong) NSNumber *threadId;
+@property (nonatomic, weak) id<ThreadSelfManagerDelegate> delegate;
+- (void)postMessage:(NSString *)message;
+@end

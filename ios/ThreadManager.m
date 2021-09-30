@@ -3,79 +3,73 @@
 
 @implementation ThreadManager
 
-@synthesize bridge = _bridge;
+RCT_EXPORT_MODULE();
 
 NSMutableDictionary *threads;
 
-RCT_EXPORT_MODULE();
-
-RCT_REMAP_METHOD(startThread,
-                 name: (NSString *)name
-                 resolver:(RCTPromiseResolveBlock)resolve
-                 rejecter:(RCTPromiseRejectBlock)reject)
++ (BOOL)requiresMainQueueSetup
 {
-  if (threads == nil) {
-    threads = [[NSMutableDictionary alloc] init];
-  }
-
-  int threadId = abs(arc4random());
-
-  NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name fallbackResource:name];
-  NSLog(@"starting Thread %@", [threadURL absoluteString]);
-
-
-   RCTBridge *threadBridge = [[RCTBridge alloc] initWithBundleURL:threadURL
-                                            moduleProvider:nil
-                                             launchOptions:nil];
-
-  ThreadSelfManager *threadSelf = [threadBridge moduleForName:@"ThreadSelfManager"];
-  [threadSelf setThreadId:threadId];
-  [threadSelf setParentBridge:self.bridge];
-
-
-  [threads setObject:threadBridge forKey:[NSNumber numberWithInt:threadId]];
-  resolve([NSNumber numberWithInt:threadId]);
+  return NO;
 }
 
-RCT_EXPORT_METHOD(stopThread:(int)threadId)
+- (NSArray<NSString *> *)supportedEvents
 {
-  if (threads == nil) {
-    NSLog(@"Empty list of threads. abort stopping thread with id %i", threadId);
-    return;
-  }
+  return @[@"message"];
+}
 
-  RCTBridge *threadBridge = threads[[NSNumber numberWithInt:threadId]];
+- (instancetype)init
+{
+  if (self = [super init]) {
+    threads = [[NSMutableDictionary alloc] init];
+  }
+  return self;
+}
+
+RCT_EXPORT_METHOD(startThread:(nonnull NSNumber *)threadId
+                  name:(NSString *)name)
+{
+  NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name
+                                                                    fallbackResource:name];
+  NSLog(@"starting Thread %@", [threadURL absoluteString]);
+
+  RCTBridge *threadBridge = [[RCTBridge alloc] initWithBundleURL:threadURL
+                                                  moduleProvider:nil
+                                                   launchOptions:nil];
+
+  ThreadSelfManager *threadSelf = [threadBridge moduleForClass:ThreadSelfManager.class];
+  [threadSelf setThreadId:threadId];
+  [threadSelf setDelegate:self];
+
+  [threads setObject:threadBridge forKey:threadId];
+}
+
+RCT_EXPORT_METHOD(stopThread:(nonnull NSNumber *)threadId)
+{
+  RCTBridge *threadBridge = threads[threadId];
   if (threadBridge == nil) {
-    NSLog(@"Thread is NIl. abort stopping thread with id %i", threadId);
+    NSLog(@"Thread is Nil. abort stopping thread with id %@", threadId);
     return;
   }
 
   [threadBridge invalidate];
-  [threads removeObjectForKey:[NSNumber numberWithInt:threadId]];
+  [threads removeObjectForKey:threadId];
 }
 
-RCT_EXPORT_METHOD(postThreadMessage: (int)threadId message:(NSString *)message)
+RCT_EXPORT_METHOD(postThreadMessage:(nonnull NSNumber *)threadId
+                  message:(NSString *)message)
 {
-  if (threads == nil) {
-    NSLog(@"Empty list of threads. abort posting to thread with id %i", threadId);
-    return;
-  }
-
-  RCTBridge *threadBridge = threads[[NSNumber numberWithInt:threadId]];
+  RCTBridge *threadBridge = threads[threadId];
   if (threadBridge == nil) {
-    NSLog(@"Thread is NIl. abort posting to thread with id %i", threadId);
+    NSLog(@"Thread is Nil. abort posting to thread with id %@", threadId);
     return;
   }
 
-  [threadBridge.eventDispatcher sendAppEventWithName:@"ThreadMessage"
-                                               body:message];
+  ThreadSelfManager *thread = [threadBridge moduleForClass:ThreadSelfManager.class];
+
+  [thread postMessage:message];
 }
 
 - (void)invalidate {
-  if (threads == nil) {
-    return;
-  }
-
   for (NSNumber *threadId in threads) {
     RCTBridge *threadBridge = threads[threadId];
     [threadBridge invalidate];
@@ -83,6 +77,19 @@ RCT_EXPORT_METHOD(postThreadMessage: (int)threadId message:(NSString *)message)
 
   [threads removeAllObjects];
   threads = nil;
+
+  [super invalidate];
+}
+
+- (void)didReceiveMessage:(ThreadSelfManager *)sender
+                 message:(NSString *)message
+{
+  id body = @{
+    @"id": sender.threadId,
+    @"message": message,
+  };
+  [self sendEventWithName:@"message"
+                     body:body];
 }
 
 @end
