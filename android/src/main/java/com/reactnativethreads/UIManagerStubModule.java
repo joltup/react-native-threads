@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.reactnativethreads;
 
 import com.facebook.react.bridge.OnBatchCompleteListener;
 import com.facebook.react.bridge.ReactApplicationContext;

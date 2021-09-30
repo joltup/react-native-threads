@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.reactnativethreads;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
@@ -9,14 +9,8 @@ import com.facebook.react.modules.appstate.AppStateModule;
 import com.facebook.react.modules.core.ExceptionsManagerModule;
 import com.facebook.react.modules.core.TimingModule;
 import com.facebook.react.modules.debug.SourceCodeModule;
-import com.facebook.react.modules.intent.IntentModule;
-import com.facebook.react.modules.network.NetworkingModule;
-import com.facebook.react.modules.storage.AsyncStorageModule;
 import com.facebook.react.modules.systeminfo.AndroidInfoModule;
-import com.facebook.react.modules.vibration.VibrationModule;
-import com.facebook.react.modules.websocket.WebSocketModule;
 import com.facebook.react.uimanager.ViewManager;
-import com.facebook.react.modules.debug.DevSettingsModule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,14 +36,8 @@ public class ThreadBaseReactPackage implements ReactPackage {
                 new SourceCodeModule(catalystApplicationContext),
                 new JSCHeapCapture(catalystApplicationContext),
 
-                // Main list
-                new AsyncStorageModule(catalystApplicationContext),
-                new IntentModule(catalystApplicationContext),
-                new NetworkingModule(catalystApplicationContext),
-                new VibrationModule(catalystApplicationContext),
-                new WebSocketModule(catalystApplicationContext),
-                new ThreadSelfModule(catalystApplicationContext),
-                new DevSettingsModule(catalystApplicationContext, reactInstanceManager.getDevSupportManager())
+                // Custom
+                new ThreadSelfModule(catalystApplicationContext)
         );
     }
 

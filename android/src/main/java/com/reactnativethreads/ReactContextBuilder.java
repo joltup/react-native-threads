@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.reactnativethreads;
 
 import android.content.Context;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.reactnativethreads;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactNativeHost;
@@ -12,12 +12,12 @@ import java.util.List;
 
 public class RNThreadPackage implements ReactPackage {
 
-    private ReactNativeHost reactNativeHost;
-    private ReactPackage additionalThreadPackages[];
+    private ReactNativeHost mReactNativeHost;
+    private ReactPackage mAdditionalThreadPackages[];
 
     public RNThreadPackage(ReactNativeHost reactNativeHost, ReactPackage... additionalThreadPackages) {
-        this.reactNativeHost = reactNativeHost;
-        this.additionalThreadPackages = additionalThreadPackages;
+        mReactNativeHost = reactNativeHost;
+        mAdditionalThreadPackages = additionalThreadPackages;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class RNThreadPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Arrays.<NativeModule>asList(
-                new RNThreadModule(reactContext, reactNativeHost, additionalThreadPackages)
+                new RNThreadModule(reactContext, mReactNativeHost, mAdditionalThreadPackages)
         );
     }
 }

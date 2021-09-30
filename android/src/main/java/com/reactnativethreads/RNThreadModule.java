@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.reactnativethreads;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -7,13 +7,15 @@ import android.util.Log;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JSBundleLoader;
 import com.facebook.react.bridge.LifecycleEventListener;
-import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.devsupport.interfaces.DevSupportManager;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,20 +34,19 @@ import okio.Sink;
 public class RNThreadModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
   private String TAG = "ThreadManager";
-  private HashMap<Integer, JSThread> threads;
 
-  private ReactApplicationContext reactApplicationContext;
+  private ReactApplicationContext mReactContext;
+  private ReactNativeHost mReactNativeHost;
+  private ReactPackage mAadditionalThreadPackages[];
 
-  private ReactNativeHost reactNativeHost;
-
-  private ReactPackage additionalThreadPackages[];
+  private HashMap<Integer, ThreadSelfModule> mThreads;
 
   public RNThreadModule(final ReactApplicationContext reactContext, ReactNativeHost reactNativehost, ReactPackage additionalThreadPackages[]) {
     super(reactContext);
-    this.reactApplicationContext = reactContext;
-    threads = new HashMap<>();
-    this.reactNativeHost = reactNativehost;
-    this.additionalThreadPackages = additionalThreadPackages;
+    mReactContext = reactContext;
+    mThreads = new HashMap<>();
+    mReactNativeHost = reactNativehost;
+    mAadditionalThreadPackages = additionalThreadPackages;
     reactContext.addLifecycleEventListener(this);
   }
 
@@ -55,45 +56,54 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
   }
 
   @ReactMethod
-  public void startThread(final String jsFileName, final Promise promise) {
+  public void startThread(int id, final String jsFileName) {
     Log.d(TAG, "Starting web thread - " + jsFileName);
 
     // When we create the absolute file path later, a "./" will break it.
     // Remove the leading "./" if it exists.
     String jsFileSlug = jsFileName.contains("./")
-      ? jsFileName.replace("./", "")
-      : jsFileName;
+            ? jsFileName.replace("./", "")
+            : jsFileName;
 
     JSBundleLoader bundleLoader = getDevSupportManager().getDevSupportEnabled()
             ? createDevBundleLoader(jsFileName, jsFileSlug)
             : createReleaseBundleLoader(jsFileName, jsFileSlug);
 
     try {
-      ArrayList<ReactPackage> threadPackages = new ArrayList<ReactPackage>(Arrays.asList(additionalThreadPackages));
+      ArrayList<ReactPackage> threadPackages = new ArrayList<ReactPackage>(Arrays.asList(mAadditionalThreadPackages));
       threadPackages.add(0, new ThreadBaseReactPackage(getReactInstanceManager()));
 
-      ReactContextBuilder threadContextBuilder = new ReactContextBuilder(getReactApplicationContext())
+      ReactApplicationContext threadContext = new ReactContextBuilder(getReactApplicationContext())
               .setJSBundleLoader(bundleLoader)
               .setDevSupportManager(getDevSupportManager())
               .setReactInstanceManager(getReactInstanceManager())
-              .setReactPackages(threadPackages);
+              .setReactPackages(threadPackages)
+              .build();
 
-      JSThread thread = new JSThread(jsFileSlug);
-      thread.runFromContext(
-              getReactApplicationContext(),
-              threadContextBuilder
-      );
-      threads.put(thread.getThreadId(), thread);
-      promise.resolve(thread.getThreadId());
+      ThreadSelfModule thread = threadContext.getNativeModule(ThreadSelfModule.class);
+      thread.setThreadId(id);
+      thread.setMessageListener(new ThreadSelfModule.MessageListener() {
+        @Override
+        public void onMessage(ThreadSelfModule thread, String message) {
+          WritableMap params = Arguments.createMap();
+          params.putInt("id", thread.getThreadId());
+          params.putString("message", message);
+
+          mReactContext
+                  .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                  .emit("message", params);
+        }
+      });
+
+      mThreads.put(id, thread);
     } catch (Exception e) {
-      promise.reject(e);
       getDevSupportManager().handleException(e);
     }
   }
 
   @ReactMethod
   public void stopThread(final int threadId) {
-    final JSThread thread = threads.get(threadId);
+    final ThreadSelfModule thread = mThreads.get(threadId);
     if (thread == null) {
       Log.d(TAG, "Cannot stop thread - thread is null for id " + threadId);
       return;
@@ -103,20 +113,20 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
       @Override
       public void run() {
         thread.terminate();
-        threads.remove(threadId);
+        mThreads.remove(threadId);
       }
     });
   }
 
   @ReactMethod
   public void postThreadMessage(int threadId, String message) {
-    JSThread thread = threads.get(threadId);
+    ThreadSelfModule thread = mThreads.get(threadId);
     if (thread == null) {
       Log.d(TAG, "Cannot post message to thread - thread is null for id " + threadId);
       return;
     }
 
-    thread.postMessage(message);
+    thread.sendMessage(message);
   }
 
   @Override
@@ -124,8 +134,8 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
     new Handler(Looper.getMainLooper()).post(new Runnable() {
       @Override
       public void run() {
-        for (int threadId : threads.keySet()) {
-          threads.get(threadId).onHostResume();
+        for (int threadId : mThreads.keySet()) {
+          mThreads.get(threadId).onHostResume();
         }
       }
     });
@@ -136,8 +146,8 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
     new Handler(Looper.getMainLooper()).post(new Runnable() {
       @Override
       public void run() {
-        for (int threadId : threads.keySet()) {
-          threads.get(threadId).onHostPause();
+        for (int threadId : mThreads.keySet()) {
+          mThreads.get(threadId).onHostPause();
         }
       }
     });
@@ -150,8 +160,8 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
     new Handler(Looper.getMainLooper()).post(new Runnable() {
       @Override
       public void run() {
-        for (int threadId : threads.keySet()) {
-          threads.get(threadId).terminate();
+        for (int threadId : mThreads.keySet()) {
+          mThreads.get(threadId).terminate();
         }
       }
     });
@@ -163,9 +173,7 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
     onHostDestroy();
   }
 
-    /*
-     *  Helper methods
-     */
+  /* Helper methods */
 
   private JSBundleLoader createDevBundleLoader(String jsFileName, String jsFileSlug) {
     String bundleUrl = bundleUrlForFile(jsFileName);
@@ -183,11 +191,11 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
 
   private JSBundleLoader createReleaseBundleLoader(String jsFileName, String jsFileSlug) {
     Log.d(TAG, "createReleaseBundleLoader - reading file from assets");
-    return JSBundleLoader.createAssetLoader(reactApplicationContext, "assets://threads/" + jsFileSlug + ".bundle", false);
+    return JSBundleLoader.createAssetLoader(mReactContext, "assets://mThreads/" + jsFileSlug + ".bundle", false);
   }
 
   private ReactInstanceManager getReactInstanceManager() {
-    return reactNativeHost.getReactInstanceManager();
+    return mReactNativeHost.getReactInstanceManager();
   }
 
   private DevSupportManager getDevSupportManager() {
