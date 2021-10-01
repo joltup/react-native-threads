@@ -2,32 +2,37 @@
 #include <stdlib.h>
 
 @implementation ThreadSelfManager {
-  // The JS loads after this module has been initialized
-  // There doesn't seem to be a great way to detect this from this module
-  // When this is not nil, queued events will be appended to this array
-  // instead of being dispatched directly. When startObserving is called, we
-  // dispatch all pending events, then set this to nil so events can be
-  // dispatched directly.
-  //
-  // This isn't fully spec compliant - if you don't add listeners on the first
-  // run loop, then add them later, you'll get all the events that should have
-  // been discarded.
+  // Messages queued here until the JS has loaded (lazily created)
   NSMutableArray<NSString *> *_pendingEvents;
 }
 
 RCT_EXPORT_MODULE();
 
++ (BOOL)requiresMainQueueSetup
+{
+  return NO;
+}
+
 - (instancetype)init
 {
   if (self = [super init]) {
-    _pendingEvents = [NSMutableArray new];
+    [NSNotificationCenter.defaultCenter
+     addObserver:self
+     selector:@selector(handleBridgeDidLoadJavaScriptNotification:)
+     name:RCTJavaScriptDidLoadNotification
+     object:self.bridge];
   }
   return self;
 }
 
-+ (BOOL)requiresMainQueueSetup
+- (void)invalidate
 {
-  return NO;
+  [NSNotificationCenter.defaultCenter removeObserver:self];
+
+  [_pendingEvents removeAllObjects];
+  _pendingEvents = nil;
+
+  [super invalidate];
 }
 
 - (NSArray<NSString *> *)supportedEvents
@@ -35,30 +40,34 @@ RCT_EXPORT_MODULE();
   return @[@"message"];
 }
 
-- (void)startObserving
+- (void)dispatchMessagesIfNeeded
 {
-  if (_pendingEvents) {
-    for (NSString *message in _pendingEvents) {
-      [self sendEventWithName:@"message" body:message];
-    }
-
-    _pendingEvents = nil;
+  if (!_pendingEvents || self.bridge.isLoading) {
+    return;
   }
+
+  for (NSString *message in _pendingEvents) {
+    [self sendEventWithName:@"message" body:message];
+  }
+
+  [_pendingEvents removeAllObjects];
+  _pendingEvents = nil;
 }
 
-- (void)stopObserving
+- (void)handleBridgeDidLoadJavaScriptNotification:(NSNotification *)notification
 {
-  if (!_pendingEvents) {
-    _pendingEvents = [NSMutableArray new];
-  }
+  [self dispatchMessagesIfNeeded];
 }
 
 - (void)postMessage:(NSString *)message
 {
-  if (_pendingEvents) {
+  if (!self.bridge.isLoading) {
+    [self dispatchMessagesIfNeeded];
+    [self sendEventWithName:@"message" body:message];
+  } else if (_pendingEvents) {
     [_pendingEvents addObject:message];
   } else {
-    [self sendEventWithName:@"message" body:message];
+    _pendingEvents = [[NSMutableArray alloc] initWithObjects:message, nil];
   }
 }
 

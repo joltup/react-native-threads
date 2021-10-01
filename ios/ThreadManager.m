@@ -12,11 +12,6 @@ RCT_EXPORT_MODULE();
   return NO;
 }
 
-- (NSArray<NSString *> *)supportedEvents
-{
-  return @[@"message"];
-}
-
 - (instancetype)init
 {
   if (self = [super init]) {
@@ -35,6 +30,11 @@ RCT_EXPORT_MODULE();
   _threads = nil;
 
   [super invalidate];
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+  return @[@"message"];
 }
 
 RCT_EXPORT_METHOD(startThread:(nonnull NSNumber *)threadId
