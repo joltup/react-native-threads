@@ -3,12 +3,12 @@ declare module "react-native-threads" {
     constructor(jsPath: string);
     postMessage(message: string): void;
     terminate(): void;
-    onmessage: null | ((message: string) => void);
+    onmessage?: (e: { data: string }) => void;
   }
 
   interface Self {
-    onmessage: null | ((message: string) => void);
     postMessage: (message: string) => void;
+    onmessage?: (e: { data: string }) => void;
   }
   export const self: Self;
 }

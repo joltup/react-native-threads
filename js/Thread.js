@@ -16,14 +16,15 @@ export default class Thread {
     this.id = currentId++;
     this.terminated = false;
 
+    this.onmessage = null;
+
     this.listener = ThreadEvents.addListener("message", ({ id, message }) => {
       if (
         !this.terminated &&
         id === this.id &&
-        message != null &&
         typeof this.onmessage === "function"
       ) {
-        this.onmessage(message);
+        this.onmessage({ data: message });
       }
     });
 

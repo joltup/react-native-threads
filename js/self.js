@@ -6,18 +6,17 @@ const { ThreadSelfManager } = NativeModules;
 const ThreadSelfManagerEvents = new NativeEventEmitter(ThreadSelfManager);
 
 const self = {
-  onmessage: null,
-
   postMessage: (message) => {
     if (message != null) {
       ThreadSelfManager.postMessage(message);
     }
   },
+  onmessage: null,
 };
 
 ThreadSelfManagerEvents.addListener("message", (message) => {
-  if (message != null && typeof self.onmessage === "function") {
-    self.onmessage(message);
+  if (typeof self.onmessage === "function") {
+    self.onmessage({ data: message });
   }
 });
 

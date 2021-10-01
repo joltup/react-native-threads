@@ -100,7 +100,7 @@ const thread = new Thread("path/to/thread.js");
 thread.postMessage("hello");
 
 // listen for messages
-thread.onmessage = (message) => console.log(message);
+thread.onmessage = (e) => console.log(e.data);
 
 // stop the JS process
 thread.terminate();
@@ -112,7 +112,9 @@ In your thread code (dedicated file such as `thread.js`):
 import { self } from "react-native-threads";
 
 // listen for messages
-self.onmessage = (message) => {};
+self.onmessage = (e) => {
+  e.data; // strings only
+};
 
 // send a message, strings only
 self.postMessage("hello");
