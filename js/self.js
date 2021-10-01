@@ -22,6 +22,7 @@ BatchedBridge.registerLazyCallableModule("RCTDeviceEventEmitter", () => {
 BatchedBridge.registerLazyCallableModule("RCTNativeAppEventEmitter", () => {
   return require("react-native/Libraries/EventEmitter/RCTNativeAppEventEmitter");
 });
+
 /*
  * This module differs from what will happen in the default setup
  * (At least in development)
