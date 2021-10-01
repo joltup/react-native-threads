@@ -1,4 +1,6 @@
-import { NativeModules, NativeEventEmitter } from "react-native";
+import "./ensure-react-native-is-initialized";
+import NativeModules from "react-native/Libraries/BatchedBridge/NativeModules";
+import NativeEventEmitter from "react-native/Libraries/EventEmitter/NativeEventEmitter";
 
 const { ThreadManager } = NativeModules;
 const ThreadEvents = new NativeEventEmitter(ThreadManager);
