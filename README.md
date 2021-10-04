@@ -135,7 +135,7 @@ By default, we only import the minimim amount from React Native to get things ru
 import "react-native";
 ```
 
-There is a cost to importing the whole of React Native - it's a over half a megabyte of JavaScript. You may wish to find out exactly what you need from React Native, then only import that. You can look into [https://github.com/facebook/react-native/blob/master/Libraries/Core/InitializeCore.js](this setup file from React Native) to find out what files get run by default. Once you've figured out what setup and polyfills you need, you'll usually end up with imports like `import 'react-native/Libraries/Core/polyfillPromise'`.
+There is a cost to importing the whole of React Native - it's a over half a megabyte of JavaScript. You may wish to find out exactly what you need from React Native, then only import that. You can look into [this setup file from React Native](https://github.com/facebook/react-native/blob/master/Libraries/Core/InitializeCore.js) to find out what files get run by default. Once you've figured out what setup and polyfills you need, you'll usually end up with imports like `import 'react-native/Libraries/Core/polyfillPromise'`.
 
 ### Thread Lifecycle
 
