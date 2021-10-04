@@ -83,4 +83,16 @@ RCT_REMAP_METHOD(postMessage,
                            message:message];
 }
 
+RCT_REMAP_METHOD(postError,
+                 didReceiveError:(NSString *)message)
+{
+  if (self.delegate == nil) {
+    NSLog(@"No parent bridge defined - abord sending thread error");
+    return;
+  }
+
+  [self.delegate didReceiveError:self
+                         message:message];
+}
+
 @end

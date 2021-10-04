@@ -92,7 +92,7 @@ RCT_EXPORT_METHOD(postThreadMessage:(nonnull NSNumber *)threadId
 }
 
 - (void)didReceiveError:(ThreadSelfManager *)sender
-                message:(NSString *)message;
+                message:(NSString *)message
 {
   id body = @{
     @"id": sender.threadId,
