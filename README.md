@@ -102,6 +102,10 @@ thread.postMessage("hello");
 // listen for messages
 thread.onmessage = (e) => console.log(e.data);
 
+// best effort error handling
+// (only errors thrown in calling thread.onmessage)
+thread.onerror = (e) => console.log(e.message);
+
 // stop the JS process
 thread.terminate();
 ```

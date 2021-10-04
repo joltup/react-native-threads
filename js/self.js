@@ -16,7 +16,11 @@ const self = {
 
 ThreadSelfManagerEvents.addListener("message", (message) => {
   if (typeof self.onmessage === "function") {
-    self.onmessage({ data: message });
+    try {
+      self.onmessage({ data: message });
+    } catch (e) {
+      ThreadSelfManager.postError(e.message ?? "Unknown error");
+    }
   }
 });
 

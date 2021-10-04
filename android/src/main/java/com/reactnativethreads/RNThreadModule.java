@@ -93,6 +93,17 @@ public class RNThreadModule extends ReactContextBaseJavaModule implements Lifecy
                   .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                   .emit("message", params);
         }
+
+        @Override
+        public void onError(ThreadSelfModule thread, String message) {
+          WritableMap params = Arguments.createMap();
+          params.putInt("id", thread.getThreadId());
+          params.putString("message", message);
+
+          mReactContext
+                  .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                  .emit("error", params);
+        }
       });
 
       mThreads.put(id, thread);

@@ -34,7 +34,7 @@ RCT_EXPORT_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[@"message"];
+  return @[@"message", @"error"];
 }
 
 RCT_EXPORT_METHOD(startThread:(nonnull NSNumber *)threadId
@@ -88,6 +88,17 @@ RCT_EXPORT_METHOD(postThreadMessage:(nonnull NSNumber *)threadId
     @"message": message,
   };
   [self sendEventWithName:@"message"
+                     body:body];
+}
+
+- (void)didReceiveError:(ThreadSelfManager *)sender
+                message:(NSString *)message;
+{
+  id body = @{
+    @"id": sender.threadId,
+    @"message": message,
+  };
+  [self sendEventWithName:@"error"
                      body:body];
 }
 

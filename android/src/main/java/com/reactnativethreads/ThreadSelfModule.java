@@ -13,7 +13,8 @@ public class ThreadSelfModule extends ReactContextBaseJavaModule {
     public static final String REACT_MODULE_NAME = "ThreadSelfManager";
 
     public interface MessageListener {
-        void onMessage(ThreadSelfModule threadSelfModule, String title);
+        void onMessage(ThreadSelfModule threadSelfModule, String message);
+        void onError(ThreadSelfModule threadSelfModule, String message);
     }
 
     private ReactApplicationContext mReactContext;
@@ -53,11 +54,17 @@ public class ThreadSelfModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod()
+    public void postError(String message) {
+        if (mMessageListener != null) {
+            mMessageListener.onError(this, message);
+        }
+    }
+
     public void sendMessage(String message) {
         mReactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("message", message);
-
     }
 
     public void onHostResume() {

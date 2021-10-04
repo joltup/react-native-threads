@@ -3,6 +3,8 @@
 @protocol ThreadSelfManagerDelegate <NSObject>
 - (void)didReceiveMessage:(id)sender
                   message:(NSString *)message;
+- (void)didReceiveError:(id)sender
+                message:(NSString *)message;
 @end
 
 @interface ThreadSelfManager : RCTEventEmitter

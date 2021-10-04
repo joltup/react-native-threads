@@ -17,16 +17,33 @@ export default class Thread {
     this.terminated = false;
 
     this.onmessage = null;
+    this.onerror = null;
 
-    this.listener = ThreadEvents.addListener("message", ({ id, message }) => {
-      if (
-        !this.terminated &&
-        id === this.id &&
-        typeof this.onmessage === "function"
-      ) {
-        this.onmessage({ data: message });
+    this.messageListener = ThreadEvents.addListener(
+      "message",
+      ({ id, message }) => {
+        if (
+          !this.terminated &&
+          id === this.id &&
+          typeof this.onmessage === "function"
+        ) {
+          this.onmessage({ data: message });
+        }
       }
-    });
+    );
+
+    this.errorListener = ThreadEvents.addListener(
+      "error",
+      ({ id, message }) => {
+        if (
+          !this.terminated &&
+          id === this.id &&
+          typeof this.onerror === "function"
+        ) {
+          this.onerror({ message });
+        }
+      }
+    );
 
     const name = jsPath.slice(0, -".js".length);
     ThreadManager.startThread(this.id, name);
@@ -52,7 +69,8 @@ export default class Thread {
     }
 
     this.terminated = true;
-    this.listener.remove();
+    this.messageListener.remove();
+    this.errorListener.remove();
     ThreadManager.stopThread(this.id);
   }
 }
