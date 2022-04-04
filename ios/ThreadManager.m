@@ -1,4 +1,5 @@
 #import "ThreadManager.h"
+#import <React/RCTDevSettings.h>
 #include <stdlib.h>
 
 @implementation ThreadManager {
@@ -47,6 +48,9 @@ RCT_EXPORT_METHOD(startThread:(nonnull NSNumber *)threadId
   RCTBridge *threadBridge = [[RCTBridge alloc] initWithBundleURL:threadURL
                                                   moduleProvider:nil
                                                    launchOptions:nil];
+  // Ensure shaking device doesn't open additional dev menus
+  [[threadBridge moduleForClass:RCTDevSettings.class]
+   setIsShakeToShowDevMenuEnabled:NO];
 
   ThreadSelfManager *threadSelf = [threadBridge moduleForClass:ThreadSelfManager.class];
   threadSelf.threadId = threadId;
