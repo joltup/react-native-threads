@@ -26,9 +26,12 @@ RCT_REMAP_METHOD(startThread,
   NSLog(@"starting Thread %@", [threadURL absoluteString]);
 
 
-   RCTBridge *threadBridge = [[RCTBridge alloc] initWithBundleURL:threadURL
+  RCTBridge* currentBridge = RCTBridge.currentBridge;
+  RCTBridge *threadBridge = [[RCTBridge alloc] initWithBundleURL:threadURL
                                             moduleProvider:nil
                                              launchOptions:nil];
+  RCTBridge.currentBridge = currentBridge;
+
 
   ThreadSelfManager *threadSelf = [threadBridge moduleForName:@"ThreadSelfManager"];
   [threadSelf setThreadId:threadId];
