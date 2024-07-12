@@ -20,13 +20,18 @@ RCT_REMAP_METHOD(startThread,
 
   int threadId = abs(arc4random());
 
-  NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name fallbackResource:name];
+  NSURL *threadURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:name fallbackURLProvider:^NSURL * {
+    return [[NSBundle mainBundle] URLForResource:name withExtension:@"jsbundle"];
+  }];
   NSLog(@"starting Thread %@", [threadURL absoluteString]);
 
 
-   RCTBridge *threadBridge = [[RCTBridge alloc] initWithBundleURL:threadURL
+  RCTBridge* currentBridge = RCTBridge.currentBridge;
+  RCTBridge *threadBridge = [[RCTBridge alloc] initWithBundleURL:threadURL
                                             moduleProvider:nil
                                              launchOptions:nil];
+  RCTBridge.currentBridge = currentBridge;
+
 
   ThreadSelfManager *threadSelf = [threadBridge moduleForName:@"ThreadSelfManager"];
   [threadSelf setThreadId:threadId];

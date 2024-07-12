@@ -24,7 +24,9 @@
     "android/",
     "ios/",
     "js/",
-    "index.js"
+    "index.js",
+    "react-native.config.js",
+    "RNThread.podspec"
   ],
   "peerDependencies": {
     "react-native": ">=0.50.0"
